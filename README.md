@@ -1,2 +1,4 @@
 maze
 ====
+
+Just for fun ...
