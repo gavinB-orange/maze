@@ -1,11 +1,11 @@
 __author__ = 'gavin'
 
 # verbosity
-VERBOSE = 2
+VERBOSE = 1
 
 # board size
-BOARD_WIDTH = 30
-BOARD_HEIGHT = 30
+BOARD_WIDTH = 50
+BOARD_HEIGHT = 50
 
 # choose how to display the maze
 DISPLAY_TYPE = "tk"
@@ -13,5 +13,5 @@ DISPLAY_TYPE = "tk"
 ALLOWED_DISPLAY_TYPES = ["tk", "text"]
 
 # do you want to see the maze path before filling in ?
-SHOW_INTERMEDIATE_MAZE = True
+SHOW_INTERMEDIATE_MAZE = False
 

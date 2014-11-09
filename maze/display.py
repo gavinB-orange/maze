@@ -4,6 +4,7 @@ __author__ = 'gavin'
 Covers the display of the maze
 '''
 
+from debug import report
 from Tkinter import *
 #import pygame
 
@@ -15,7 +16,7 @@ class Display(object):
 
     def __init__(self, bd):
         self.board = bd
-        print "Display ready"
+        report("Display ready", 2)
 
     def show(self, test):
         print "Display of board"

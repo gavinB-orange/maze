@@ -13,6 +13,8 @@ import display
 import board
 import user_input
 
+from debug import report
+
 
 class Maze(object):
     """
@@ -31,7 +33,7 @@ class Maze(object):
         self.endpoint_end_pos = (0, random.randint(0, self.board.get_height() - 1))
         self.board.set_start(self.endpoint_start_pos)
         self.board.set_end(self.endpoint_end_pos)
-        print "Maze ready"
+        report("Maze ready", 2)
 
     def create(self):
         return self.walk.create()

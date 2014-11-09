@@ -34,7 +34,7 @@ class Board(object):
         self.start_y = 0
         self.end_x = 0
         self.end_y = 0
-        print "Board ready"
+        report("Board ready", 2)
 
     def inc_path_count(self):
         self.path_count += 1
@@ -52,6 +52,7 @@ class Board(object):
         self.start_y = y
         self.closest = (x, y)
         self.board[self.start_x][self.start_y] = Board._START_ENDPOINT
+        report("Start point is at (%d, %d)" % (self.start_x, self.start_y), 2)
 
     def set_end(self, pos):
         x, y = pos
@@ -62,7 +63,7 @@ class Board(object):
         self.end_x = self.width - x - 1
         self.end_y = self.height - y - 1
         self.board[self.end_x][self.end_y] = Board._END_ENDPOINT
-        report("Endpoint is at (%d, %d)" % (self.end_x, self.end_y))
+        report("Endpoint is at (%d, %d)" % (self.end_x, self.end_y), 2)
 
     def get_max_walks(self):
         return self.width * self.height
@@ -92,7 +93,10 @@ class Board(object):
         return self.board[move[0]][move[1]] == Board._END_ENDPOINT
 
     def is_another_corridor(self, move):
-        return self.board[move[0]][move[1]] in range(Board._PATH, self.path_count)
+        val = self.board[move[0]][move[1]]
+        rr = range(Board._PATH, self.path_count)
+        #return self.board[move[0]][move[1]] in range(Board._PATH, self.path_count)
+        return val in rr
 
     def get_endpoint_values(self):
         return Board._END_ENDPOINT, Board._START_ENDPOINT
@@ -141,7 +145,8 @@ class Board(object):
         :param y: y position
         :return: True if is a wall
         """
-        count = self.check_valid_neighbours((x, y), (Board._EMPTY, Board._END_ENDPOINT))
+        #count = self.check_valid_neighbours((x, y), (Board._EMPTY, Board._END_ENDPOINT))
+        count = self.check_valid_neighbours((x, y), range(self.path_count))
         return count < 3
 
     def get_legal(self, x, y, fill_in=False):

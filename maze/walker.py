@@ -18,7 +18,7 @@ class Walker(object):
         self.y = None
         self.orig_x = None
         self.orig_y = None
-        report("Walker ready")
+        report("Walker ready", 2)
 
     def get_legal_moves(self, fill_in=False):
         possibles = self.board.get_legal(self.x, self.y, fill_in=fill_in)
@@ -95,7 +95,7 @@ class Walker(object):
         (self.x, self.y) = self.board.get_start()
         finished = self.take_a_walk()
         if finished:
-            print "Finished maze"
+            report("Finished maze", 1)
         while not finished:
             if debug.DEBUG:
                 self.maze.display()
@@ -111,7 +111,7 @@ class Walker(object):
             self.board.reset_closest_dist_2()  # redundant, but safe.
             finished = self.take_a_walk()
             if finished:
-                print "Finished maze"
+                report("Finished maze", 1)
             if self.did_not_move():
                 self.forced_step()
         return True
@@ -121,12 +121,12 @@ class Walker(object):
         Do something about all that filled in space.
         :return:
         """
-        print "Starting to fill in the non-used space"
+        report("Starting to fill in the non-used space", 2)
         p = self.board.get_start_pos()
         assert p != "DEBUG_FLAG"
         while p is not None:
             self.board.take_move(p)
-            report("Start pos is %s" % str(p), 1)
+            report("Start pos is %s" % str(p), 2)
             (self.x, self.y) = p
             self.take_a_fill_in_walk()
             p = self.board.get_start_pos()
