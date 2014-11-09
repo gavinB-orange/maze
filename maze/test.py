@@ -8,7 +8,7 @@ def test1():
         print "+++++++++++++++++++++++++++++++++++++++++++++"
         print "+++++++++++++++++++++++++++++++++++++++++++++"
         print "Iteration %d" % n
-        mz = maze.Maze()
+        mz = maze.Maze(True)
         assert mz.create()
         print "passed"
         print "+++++++++++++++++++++++++++++++++++++++++++++"
@@ -20,9 +20,9 @@ def test2():
         print "+++++++++++++++++++++++++++++++++++++++++++++"
         print "+++++++++++++++++++++++++++++++++++++++++++++"
         print "Iteration %d" % n
-        mz = maze.Maze()
+        mz = maze.Maze(True)
         assert mz.create()
-        assert mz.fill_in()
+        mz.fill_in()
         print "passed"
         print "+++++++++++++++++++++++++++++++++++++++++++++"
         print "+++++++++++++++++++++++++++++++++++++++++++++"

@@ -1,6 +1,8 @@
 __author__ = 'gavin'
 
-VERBOSE = 1
+import user_input
+
+VERBOSE = user_input.VERBOSE
 DEBUG = False
 
 

@@ -1,5 +1,6 @@
 __author__ = 'gavin'
 
+import user_input
 from debug import report
 
 
@@ -7,8 +8,6 @@ class Board(object):
     """
     This class implements the board - the notion of what is legal or not re. moves
     """
-    _WIDTH = 20
-    _HEIGHT = 20
     _NEIGHBOURS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     _EMPTY = 0
     _START_ENDPOINT = 1
@@ -16,10 +15,10 @@ class Board(object):
     _CLOSEST = 3
     _PATH = 4
 
-    def __init__(self):
+    def __init__(self, width, height):
         self.board = []
-        self.height = Board._HEIGHT
-        self.width = Board._WIDTH
+        self.height = height
+        self.width = width
         self.neighbours = Board._NEIGHBOURS
         for w in xrange(self.width):
             line = []
@@ -30,7 +29,7 @@ class Board(object):
         self.closest_dist_2 = None
         self.reset_closest_dist_2()
         self.path_count = Board._PATH
-        self.max_pos_iteration = Board._WIDTH * Board._HEIGHT
+        self.max_pos_iteration = self.width * self.height
         self.start_x = 0
         self.start_y = 0
         self.end_x = 0
@@ -41,30 +40,32 @@ class Board(object):
         self.path_count += 1
 
     def reset_closest_dist_2(self):
-        self.closest_dist_2 = Board._HEIGHT * Board._HEIGHT + Board._WIDTH * Board._WIDTH
+        self.closest_dist_2 = self.height * self.height + self.width * self.width
 
-    def set_start(self, x, y):
+    def set_start(self, pos):
+        x, y = pos
         assert x >= 0, "ERROR = start x cannot be less than 0"
         assert y >= 0, "ERROR = start y cannot be less than 0"
-        assert x < self.width, "ERROR = start x cannot be greater than %d" % self.width
-        assert y < self.height, "ERROR = start y cannot be greater than %d" % self.height
+        assert x < self.width, "ERROR = start x cannot be greater than %d but was %d" % (self.width, x)
+        assert y < self.height, "ERROR = start y cannot be greater than %d but was %d" % (self.height, y)
         self.start_x = x
         self.start_y = y
         self.closest = (x, y)
         self.board[self.start_x][self.start_y] = Board._START_ENDPOINT
 
-    def set_end(self, x, y):
+    def set_end(self, pos):
+        x, y = pos
         assert x >= 0, "ERROR = end x cannot be less than 0"
         assert y >= 0, "ERROR = end y cannot be less than 0"
-        assert x < self.width, "ERROR = end x cannot be greater than %d" % self.width
-        assert y < self.height, "ERROR = end y cannot be greater than %d" % self.height
+        assert x < self.width, "ERROR = end x cannot be greater than %d but was %d" % (self.width, x)
+        assert y < self.height, "ERROR = end y cannot be greater than %d but was %d" % (self.height, y)
         self.end_x = self.width - x - 1
         self.end_y = self.height - y - 1
         self.board[self.end_x][self.end_y] = Board._END_ENDPOINT
         report("Endpoint is at (%d, %d)" % (self.end_x, self.end_y))
 
     def get_max_walks(self):
-        return Board._WIDTH + Board._HEIGHT
+        return self.width * self.height
 
     def get_start(self):
         return self.start_x, self.start_y
@@ -91,7 +92,7 @@ class Board(object):
         return self.board[move[0]][move[1]] == Board._END_ENDPOINT
 
     def is_another_corridor(self, move):
-        return self.board[move[0]][move[1]] in range(self.path_count)
+        return self.board[move[0]][move[1]] in range(Board._PATH, self.path_count)
 
     def get_endpoint_values(self):
         return Board._END_ENDPOINT, Board._START_ENDPOINT
@@ -186,19 +187,20 @@ class Board(object):
         report("looking for space to start a corridor from", 2)
         for x in xrange(len(self.board)):
             for y in xrange(len(self.board[x])):
-                # an isolation cross can cause a trap without this next 2 lines as it is seen as a valid
+                # an isolation cross can cause a trap without these next 2 lines as it is seen as a valid
                 # start pos, but there are no legal moves. I avoid this by marking the position as taken via
                 # a take_move(p) and here I explicitly check whether I've already stood here before and move
                 # on if so
                 if self.board[x][y] == self.path_count:
-                    report("I see footsteps", 2)
+                    report("I see footsteps : %d" % self.path_count, 2)
                     continue
                 pos = (x, y)
                 count = self.check_valid_neighbours(pos, [Board._EMPTY], offboard_ok=False)
                 if count == 4:
                     report("found valid pos %s" % str(pos), 2)
                     self.max_pos_iteration -= 1
-                    assert self.max_pos_iteration > 0, "runaway get_start_pos"
+                    if self.max_pos_iteration < 1:
+                        return "DEBUG_FLAG"
                     return pos
         return None
 

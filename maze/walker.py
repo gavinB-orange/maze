@@ -29,8 +29,14 @@ class Walker(object):
         Do a single walk action. This may well result in a dead end
         :return:True if you find the endpoint, False if no more moves.
         """
-        report("Mad miner takes a walk from (%d, %d)" % (self.x, self.y), 2)
-        self.board.inc_path_count()
+        if fill_in:
+            report("Mad miner takes a fill in walk from (%d, %d)" % (self.x, self.y), 2)
+        else:
+            report("Mad miner takes a walk from (%d, %d)" % (self.x, self.y), 2)
+        if not fill_in:
+            self.board.inc_path_count()
+        #make sure we mark our starting point
+        self.board.take_move((self.x, self.y))
         while True:
             legal_moves = self.get_legal_moves(fill_in=fill_in)
             report("%d legal moves" % len(legal_moves), 2)
@@ -63,7 +69,6 @@ class Walker(object):
         """
         Take a walk from an unused space to any corridor
         """
-        report("Mad miner takes a fill in walk from (%d, %d)" % (self.x, self.y), 2)
         return self.take_a_walk(fill_in=True)
 
     def did_not_move(self):
@@ -116,13 +121,17 @@ class Walker(object):
         Do something about all that filled in space.
         :return:
         """
-        ok = True
         print "Starting to fill in the non-used space"
         p = self.board.get_start_pos()
+        assert p != "DEBUG_FLAG"
         while p is not None:
             self.board.take_move(p)
-            report("Start pos is %s" % str(p), 2)
+            report("Start pos is %s" % str(p), 1)
             (self.x, self.y) = p
-            ok = ok and self.take_a_fill_in_walk()
+            self.take_a_fill_in_walk()
             p = self.board.get_start_pos()
-        return ok
+            if p == "DEBUG_FLAG":
+                self.maze.display()
+                raise Exception("Debug flag")
+
+
