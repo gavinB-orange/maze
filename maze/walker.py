@@ -33,8 +33,9 @@ class Walker(object):
             report("Mad miner takes a fill in walk from (%d, %d)" % (self.x, self.y), 2)
         else:
             report("Mad miner takes a walk from (%d, %d)" % (self.x, self.y), 2)
-        if not fill_in:
-            self.board.inc_path_count()
+        #if not fill_in:
+        #    self.board.inc_path_count()
+        self.board.inc_path_count()
         #make sure we mark our starting point
         self.board.take_move((self.x, self.y))
         while True:
