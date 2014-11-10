@@ -10,6 +10,9 @@ BOARD_HEIGHT = 50
 # cell appearance
 CELL_WIDTH = 15
 CELL_HEIGHT = 15
+CELL_COLOUR = "blue"
+BACKGROUND_COLOUR = "yellow"
+ENDPOINT_COLOUR = "red"
 
 # choose how to display the maze
 DISPLAY_TYPE = "tk"

@@ -53,12 +53,18 @@ class TkDisplay(Display):
         self.cell_width = TkDisplay._BLOCK_WIDTH
         self.display_width = self.board.get_width() * self.cell_width
         self.display_height = self.board.get_height() * self.cell_height
+        self.set_colours()
 
     def set_cell_dimensions(self, cw, ch):
         self.cell_width = cw
         self.cell_height = ch
         self.display_width = self.board.get_width() * self.cell_width
         self.display_height = self.board.get_height() * self.cell_height
+
+    def set_colours(self, background="white", cell_colour="blue", endpoint_colour="red"):
+        self.background_colour = background
+        self.cell_colour = cell_colour
+        self.endpoint_colour = endpoint_colour
 
     def show(self, test):
         """
@@ -70,12 +76,12 @@ class TkDisplay(Display):
         boxes = self.board.get_board()
         for x in xrange(self.board.get_width()):
             for y in xrange(self.board.get_height()):
-                colour = "white"  # default value
+                colour = self.background_colour  # default value
                 if boxes[x][y] == self.board.get_empty_val():
-                    colour = "blue"
+                    colour = self.cell_colour
                 else:
                     if boxes[x][y] in self.board.get_endpoint_values():
-                        colour = "red"
+                        colour = self.endpoint_colour
                 w.create_rectangle(x * self.cell_width,
                                    y * self.cell_height,
                                    (x+1) * self.cell_width,
