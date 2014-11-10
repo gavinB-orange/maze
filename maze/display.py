@@ -53,6 +53,9 @@ class TkDisplay(Display):
         self.cell_width = TkDisplay._BLOCK_WIDTH
         self.display_width = self.board.get_width() * self.cell_width
         self.display_height = self.board.get_height() * self.cell_height
+        self.endpoint_colour = None
+        self.cell_colour = None
+        self.background_colour = None
         self.set_colours()
 
     def set_cell_dimensions(self, cw, ch):
@@ -89,4 +92,3 @@ class TkDisplay(Display):
                                    fill=colour)
         if not test:
             mainloop()
-

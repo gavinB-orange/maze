@@ -52,7 +52,7 @@ class Maze(object):
     def display(self):
         return self.disp.show(self.test)
 
-if __name__ == '__main__':
+def run_maze():
     mz = Maze()
     mz.create()
     if user_input.SHOW_INTERMEDIATE_MAZE:
@@ -60,3 +60,6 @@ if __name__ == '__main__':
     mz.fill_in()
     mz.redraw_endpoints()
     mz.display()
+
+if __name__ == '__main__':
+    run_maze()
