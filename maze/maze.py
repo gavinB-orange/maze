@@ -24,6 +24,11 @@ class Maze(object):
         self.test = test
         self.board = board.Board(user_input.BOARD_WIDTH, user_input.BOARD_HEIGHT)
         self.walk = walker.Walker(self, self.board)
+        self.endpoint_start_pos = (0, random.randint(0, self.board.get_height() - 1))
+        self.endpoint_end_pos = (0, random.randint(0, self.board.get_height() - 1))
+        self.board.set_start(self.endpoint_start_pos)
+        self.board.set_end(self.endpoint_end_pos)
+        # choose the appropriate display type and initialize
         assert user_input.DISPLAY_TYPE in user_input.ALLOWED_DISPLAY_TYPES, "unknown display type chosen"
         if user_input.DISPLAY_TYPE == "text":
             self.disp = display.Display(self.board)
@@ -33,10 +38,12 @@ class Maze(object):
             self.disp.set_colours(background=user_input.BACKGROUND_COLOUR,
                                   cell_colour=user_input.CELL_COLOUR,
                                   endpoint_colour=user_input.ENDPOINT_COLOUR)
-        self.endpoint_start_pos = (0, random.randint(0, self.board.get_height() - 1))
-        self.endpoint_end_pos = (0, random.randint(0, self.board.get_height() - 1))
-        self.board.set_start(self.endpoint_start_pos)
-        self.board.set_end(self.endpoint_end_pos)
+        if user_input.DISPLAY_TYPE == "pygame":
+            self.disp = display.PygameDisplay(self.board)
+            self.disp.set_cell_dimensions(user_input.CELL_WIDTH, user_input.CELL_HEIGHT)
+            self.disp.set_colours(background=user_input.BACKGROUND_COLOUR,
+                                  cell_colour=user_input.CELL_COLOUR,
+                                  endpoint_colour=user_input.ENDPOINT_COLOUR)
         report("Maze ready", 2)
 
     def create(self):

@@ -15,9 +15,10 @@ BACKGROUND_COLOUR = "yellow"
 ENDPOINT_COLOUR = "red"
 
 # choose how to display the maze
-DISPLAY_TYPE = "tk"
+#DISPLAY_TYPE = "tk"
 #DISPLAY_TYPE = "text"
-ALLOWED_DISPLAY_TYPES = ["tk", "text"]
+DISPLAY_TYPE = "pygame"
+ALLOWED_DISPLAY_TYPES = ["tk", "text", "pygame"]
 
 # do you want to see the maze path before filling in ?
 SHOW_INTERMEDIATE_MAZE = False
