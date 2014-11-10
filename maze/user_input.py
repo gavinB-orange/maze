@@ -7,6 +7,10 @@ VERBOSE = 1
 BOARD_WIDTH = 50
 BOARD_HEIGHT = 50
 
+# cell appearance
+CELL_WIDTH = 15
+CELL_HEIGHT = 15
+
 # choose how to display the maze
 DISPLAY_TYPE = "tk"
 #DISPLAY_TYPE = "text"

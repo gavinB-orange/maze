@@ -29,6 +29,7 @@ class Maze(object):
             self.disp = display.Display(self.board)
         if user_input.DISPLAY_TYPE == "tk":
             self.disp = display.TkDisplay(self.board)
+            self.disp.set_cell_dimensions(user_input.CELL_WIDTH, user_input.CELL_HEIGHT)
         self.endpoint_start_pos = (0, random.randint(0, self.board.get_height() - 1))
         self.endpoint_end_pos = (0, random.randint(0, self.board.get_height() - 1))
         self.board.set_start(self.endpoint_start_pos)

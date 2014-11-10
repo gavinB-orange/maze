@@ -44,14 +44,21 @@ class TkDisplay(Display):
     """
     This uses Tk to display the maze
     """
-    _BLOCK_WIDTH = 10
+    _BLOCK_WIDTH = 10   # defaults which can / will be over-written
     _BLOCK_HEIGHT = 10
 
     def __init__(self, bd):
         Display.__init__(self, bd)
-        self.display_width = self.board.get_width() * TkDisplay._BLOCK_WIDTH
-        self.display_height = self.board.get_height() * TkDisplay._BLOCK_HEIGHT
+        self.cell_height = TkDisplay._BLOCK_HEIGHT
+        self.cell_width = TkDisplay._BLOCK_WIDTH
+        self.display_width = self.board.get_width() * self.cell_width
+        self.display_height = self.board.get_height() * self.cell_height
 
+    def set_cell_dimensions(self, cw, ch):
+        self.cell_width = cw
+        self.cell_height = ch
+        self.display_width = self.board.get_width() * self.cell_width
+        self.display_height = self.board.get_height() * self.cell_height
 
     def show(self, test):
         """
@@ -63,17 +70,16 @@ class TkDisplay(Display):
         boxes = self.board.get_board()
         for x in xrange(self.board.get_width()):
             for y in xrange(self.board.get_height()):
+                colour = "white"  # default value
                 if boxes[x][y] == self.board.get_empty_val():
                     colour = "blue"
                 else:
                     if boxes[x][y] in self.board.get_endpoint_values():
                         colour = "red"
-                    else:
-                        colour = "white"
-                w.create_rectangle(x * TkDisplay._BLOCK_WIDTH,
-                                   y * TkDisplay._BLOCK_HEIGHT,
-                                   (x+1) * TkDisplay._BLOCK_WIDTH,
-                                   (y+1) * TkDisplay._BLOCK_HEIGHT,
+                w.create_rectangle(x * self.cell_width,
+                                   y * self.cell_height,
+                                   (x+1) * self.cell_width,
+                                   (y+1) * self.cell_height,
                                    fill=colour)
         if not test:
             mainloop()
