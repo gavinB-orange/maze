@@ -16,6 +16,12 @@ class Board(object):
     _PATH = 4
 
     def __init__(self, width, height):
+        """
+        Initialize everything - in many cases strictly temporarily.
+        :param width: width of the board
+        :param height: height of the board
+        :return:
+        """
         self.board = []
         self.height = height
         self.width = width
@@ -37,12 +43,21 @@ class Board(object):
         report("Board ready", 2)
 
     def inc_path_count(self):
+        """
+        Mark the start of a new path - needed for the filling algorithm
+        :return:
+        """
         self.path_count += 1
 
     def reset_closest_dist_2(self):
         self.closest_dist_2 = self.height * self.height + self.width * self.width
 
     def set_start(self, pos):
+        """
+        Set the start position.
+        :param pos: where to start
+        :return:
+        """
         x, y = pos
         assert x >= 0, "ERROR = start x cannot be less than 0"
         assert y >= 0, "ERROR = start y cannot be less than 0"
@@ -55,6 +70,11 @@ class Board(object):
         report("Start point is at (%d, %d)" % (self.start_x, self.start_y), 2)
 
     def set_end(self, pos):
+        """
+        Set the end position
+        :param pos: where to end
+        :return:
+        """
         x, y = pos
         assert x >= 0, "ERROR = end x cannot be less than 0"
         assert y >= 0, "ERROR = end y cannot be less than 0"
@@ -66,6 +86,11 @@ class Board(object):
         report("Endpoint is at (%d, %d)" % (self.end_x, self.end_y), 2)
 
     def get_max_walks(self):
+        """
+        Get a sensible maximum number for how many walks are allowed.
+         Used to catch infinite loop cases.
+        :return:
+        """
         return self.width * self.height
 
     def get_start(self):
@@ -93,6 +118,11 @@ class Board(object):
         return self.board[move[0]][move[1]] == Board._END_ENDPOINT
 
     def is_another_corridor(self, move):
+        """
+        Check whether a position is another corridor
+        :param move: position to check
+        :return: True if another corridor
+        """
         val = self.board[move[0]][move[1]]
         rr = range(Board._PATH, self.path_count)
         #return self.board[move[0]][move[1]] in range(Board._PATH, self.path_count)
@@ -122,6 +152,13 @@ class Board(object):
             return False
 
     def check_valid_neighbours(self, pos, valid, offboard_ok=True):
+        """
+        Check out the neighbours
+        :param pos: where we are
+        :param valid: who is vaid
+        :param offboard_ok: how you treat a neighbour that is off the board
+        :return:
+        """
         count = 0
         for to_check in self.get_neighbours():
             xx = to_check[0] + pos[0]
@@ -150,6 +187,13 @@ class Board(object):
         return count < 3
 
     def get_legal(self, x, y, fill_in=False):
+        """
+        Get the list of legal neighbours
+        :param x: x position
+        :param y: y position
+        :param fill_in: fill_in mode is a bit different
+        :return: list
+        """
         poss = []
         for to_check in self.get_neighbours():
             xx = to_check[0] + x
@@ -171,6 +215,11 @@ class Board(object):
                (self.end_y - move[1]) * (self.end_y - move[1])
 
     def take_move(self, move):
+        """
+        Take the move - which means updating the closest info
+        :param move: where to move to
+        :return:
+        """
         report("moved to %s" % str(move), 2)
         self.board[move[0]][move[1]] = self.path_count
         d2 = self.dist_2(move)
@@ -212,6 +261,7 @@ class Board(object):
     def get_forced_step(self, start):
         """
         walk one step closer to the destination - no matter what is in the way
+        :param start : where we start
         :return:the step taken
         """
         delta_x = self.end_x - start[0]

@@ -21,6 +21,14 @@ class Maze(object):
     Covers the top level integration of the various components
     """
     def __init__(self, test=False):
+        """
+        Setup - instantiate the board, set the start / end points
+        and get the appropriate display object based upon the value from
+        user_input.
+        :param test: if True it signals e.g. not to wait for the user to
+                     quit the display,
+        :return:
+        """
         self.test = test
         self.board = board.Board(user_input.BOARD_WIDTH, user_input.BOARD_HEIGHT)
         self.walk = walker.Walker(self, self.board)

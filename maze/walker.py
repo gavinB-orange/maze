@@ -12,6 +12,11 @@ class Walker(object):
     """
 
     def __init__(self, mz, bd):
+        """
+        :param mz: reference to the owning maze
+        :param bd: reference to the board being walked
+        :return:
+        """
         self.maze = mz
         self.board = bd
         self.x = None
@@ -21,12 +26,20 @@ class Walker(object):
         report("Walker ready", 2)
 
     def get_legal_moves(self, fill_in=False):
+        """
+        Get the legal moves - delegated to the board. fill_in mode is used
+        to indicate whether we are doing the initial dig, or the final
+        fill-in part.
+        :param fill_in: if true, we are in fill in mode.
+        :return:
+        """
         possibles = self.board.get_legal(self.x, self.y, fill_in=fill_in)
         return possibles
 
     def take_a_walk(self, fill_in=False):
         """
         Do a single walk action. This may well result in a dead end
+        :param fill_in : used to indicate fill_in mode
         :return:True if you find the endpoint, False if no more moves.
         """
         if fill_in:
